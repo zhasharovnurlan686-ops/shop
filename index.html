@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Интернет-магазин</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --accent:#6c7cff;
+  --bg:#0b0c10;
+  --card:rgba(255,255,255,.05);
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+body{background:var(--bg);color:#fff}
+
+/* HEADER */
+header{
+  padding:20px 6vw;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+nav a{
+  color:#fff;
+  text-decoration:none;
+  margin-left:20px;
+  opacity:.8;
+}
+nav a:hover{opacity:1}
+
+/* SECTIONS */
+section{padding:80px 6vw}
+h1,h2{text-align:center;margin-bottom:30px}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:25px;
+}
+
+/* CARD */
+.card{
+  background:var(--card);
+  border-radius:20px;
+  padding:18px;
+  text-align:center;
+  transition:.3s;
+}
+.card:hover{
+  transform:translateY(-8px);
+  box-shadow:0 15px 35px rgba(108,124,255,.25);
+}
+.card img{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+  border-radius:14px;
+}
+.price{
+  margin:10px 0;
+  color:var(--accent);
+  font-weight:600;
+}
+button{
+  padding:10px 22px;
+  border:none;
+  border-radius:25px;
+  background:linear-gradient(135deg,var(--accent),#4f46e5);
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+}
+
+/* CART */
+.item{
+  background:var(--card);
+  padding:14px;
+  border-radius:14px;
+  margin-bottom:12px;
+}
+.total{
+  margin-top:20px;
+  font-weight:600;
+  color:var(--accent);
+}
+
+/* CONTACTS */
+.contact-box{
+  max-width:400px;
+  margin:0 auto;
+  text-align:center;
+}
+.contact-box a{
+  color:var(--accent);
+  text-decoration:none;
+  font-weight:600;
+}
+
+/* FOOTER */
+footer{
+  padding:30px;
+  text-align:center;
+  opacity:.7;
+}
+.author{
+  margin-top:8px;
+  color:var(--accent);
+  font-weight:600;
+}
+
+/* MOBILE */
+@media(max-width:480px){
+  header{flex-direction:column;gap:12px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <strong>MyShop</strong>
+  <nav>
+    <a href="#shop">Магазин</a>
+    <a href="#cart">Корзина</a>
+    <a href="#contacts">Контакты</a>
+  </nav>
+</header>
+
+<!-- МАГАЗИН -->
+<section id="shop">
+  <h1>Каталог товаров</h1>
+
+  <div class="grid">
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f">
+      <h3>Товар 1</h3>
+      <div class="price">1 990 сом</div>
+      <button onclick="addToCart('Товар 1',1990)">В корзину</button>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f">
+      <h3>Товар 2</h3>
+      <div class="price">2 500 сом</div>
+      <button onclick="addToCart('Товар 2',2500)">В корзину</button>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e">
+      <h3>Товар 3</h3>
+      <div class="price">3 200 сом</div>
+      <button onclick="addToCart('Товар 3',3200)">В корзину</button>
+    </div>
+  </div>
+</section>
+
+<!-- КОРЗИНА -->
+<section id="cart">
+  <h2>Корзина</h2>
+  <div id="cartItems"></div>
+</section>
+
+<!-- КОНТАКТЫ -->
+<section id="contacts">
+  <h2>Контакты</h2>
+  <div class="contact-box">
+    <p>Telegram: <a href="https://t.me/yourusername">@yourusername</a></p>
+    <p>Email: example@mail.com</p>
+  </div>
+</section>
+
+<footer>
+  <div>© 2026 Интернет-магазин</div>
+  <div class="author">Создано: Жашаров Нурлан Узакович</div>
+</footer>
+
+<script>
+function addToCart(name, price){
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart.push({name,price});
+  localStorage.setItem("cart", JSON.stringify(cart));
+  renderCart();
+  alert("Товар добавлен в корзину");
+}
+
+function renderCart(){
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let container = document.getElementById("cartItems");
+  container.innerHTML = "";
+  let total = 0;
+
+  cart.forEach(item=>{
+    total += item.price;
+    container.innerHTML += `
+      <div class="item">
+        ${item.name} — ${item.price} сом
+      </div>`;
+  });
+
+  if(cart.length){
+    container.innerHTML += `<div class="total">Итого: ${total} сом</div>`;
+  } else {
+    container.innerHTML = "<p style='text-align:center;opacity:.7'>Корзина пуста</p>";
+  }
+}
+
+renderCart();
+</script>
+
+</body>
+</html>
